@@ -10,30 +10,44 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PodcastTest extends TestCase
 {
+    use DatabaseTransactions;
 
-  use DatabaseTransactions;
+    private function get_token()
+    {
+        $user = factory(\App\User::class)->create();
+        return $user->createToken('TestToken')->accessToken;
+    }
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+    private function set_header()
+    {
+        $header = [];
+        $header['Accept'] = 'application/json';
+        $header['Authorization'] = 'Bearer '.$this->get_token();
+
+        return $header;
+    }
+
     public function test_create_access_token()
     {
+        $token = $this->get_token();
+        $this->assertTrue($token !== null);
+    }
 
-              $user = factory(\App\User::class)->create();
+    public function test_get_shows()
+    {
+        $response = $this->json('GET', '/api/shows', [], $this->set_header());
+        $response->assertStatus(200);
+    }
 
-              $token = $user->createToken('TestToken')->accessToken;
+    public function test_get_seasons()
+    {
+        $response = $this->json('GET', '/api/seasons', [], $this->set_header());
+        $response->assertStatus(200);
+    }
 
-              $this->assertTrue($token !== null);
-
-              $header = [];
-              $header['Accept'] = 'application/json';
-              $header['Authorization'] = 'Bearer '.$token;
-
-              $response = $this->json('GET', '/api/podcasts', [], $header);
-
-              $response->assertStatus(200);
-
+    public function test_get_episodes()
+    {
+        $response = $this->json('GET', '/api/episodes', [], $this->set_header());
+        $response->assertStatus(200);
     }
 }
