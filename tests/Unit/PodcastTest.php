@@ -35,7 +35,30 @@ class PodcastTest extends TestCase
 
     public function test_get_shows()
     {
-        $response = $this->json('GET', '/api/shows', [], $this->set_header());
+        $response = $this->json('GET', '/api/show', [], $this->set_header());
+        
+        $response
+        ->assertStatus(200)
+        ->assertJsonStructure([
+          'data' => [
+              '*' => [
+                'id',
+                'name',
+                'description',
+                'status',
+                'created_at',
+                'updated_at',
+                'user_id',
+              ]
+          ]
+      ]);
+    }
+
+    public function test_get_show()
+    {
+        $id = factory(\App\Show::class)->create()->id;
+
+        $response = $this->json('GET', '/api/show/'.$id, [], $this->set_header());
         $response->assertStatus(200);
     }
 
