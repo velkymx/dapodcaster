@@ -30,6 +30,8 @@ window.Vue = require('vue');
      require('./components/passport/PersonalAccessTokens.vue')
  );
 
+ Vue.component('podcasts', require('./components/podcasts/PodCastList.vue'));
+
 const app = new Vue({
     el: '#app'
 });

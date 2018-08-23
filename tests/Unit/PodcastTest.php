@@ -60,7 +60,7 @@ class PodcastTest extends TestCase
 
       $response
       ->assertStatus(200)
-      ->assertSee('Laravel');
+      ->assertSee('Podcasts');
     }
 
     public function test_get_show()
