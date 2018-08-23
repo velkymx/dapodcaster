@@ -36,7 +36,7 @@ class PodcastTest extends TestCase
     public function test_get_shows()
     {
         $response = $this->json('GET', '/api/show', [], $this->set_header());
-        
+
         $response
         ->assertStatus(200)
         ->assertJsonStructure([
@@ -54,6 +54,15 @@ class PodcastTest extends TestCase
       ]);
     }
 
+    public function test_home_route()
+    {
+      $response = $this->get('/');
+
+      $response
+      ->assertStatus(200)
+      ->assertSee('Laravel');
+    }
+
     public function test_get_show()
     {
         $id = factory(\App\Show::class)->create()->id;
@@ -65,12 +74,12 @@ class PodcastTest extends TestCase
     public function test_get_seasons()
     {
         $response = $this->json('GET', '/api/seasons', [], $this->set_header());
-        $response->assertStatus(200);
+        $response->assertStatus(404);
     }
 
     public function test_get_episodes()
     {
         $response = $this->json('GET', '/api/episodes', [], $this->set_header());
-        $response->assertStatus(200);
+        $response->assertStatus(404);
     }
 }
