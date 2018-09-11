@@ -15,3 +15,4 @@ yarn-error.log
 .rnd
 .DS_Store
 public/*
+public/js/app.js
